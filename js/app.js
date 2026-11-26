@@ -386,6 +386,7 @@
         if (btn) btn.classList.add('right');
         fb.textContent = pick(t('correct')); fb.className = 'feedback good';
         sfx.ok();
+        if (q.kind === 'letter') later(function () { speak(D.LETTERS[q.target].ar); }, 350);
         later(function () { R.i++; route(); }, 1100);
       } else {
         sfx.bad();

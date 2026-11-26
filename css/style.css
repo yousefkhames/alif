@@ -278,3 +278,14 @@ a { text-decoration: none; }
 .nt-word { font-size: 14px; color: var(--ink2); text-align: center; line-height: 1.1; }
 .ntile.on .nt-word { color: var(--ink); }
 @media (min-width: 560px) { .ngrid { grid-template-columns: repeat(7, 1fr); } }
+
+/* short phones: keep the keypad and the answer buttons on one screen */
+@media (max-height: 720px) {
+  .screen { gap: 10px; padding-top: 10px; }
+  .qbox { min-height: 120px; padding: 10px; }
+  .stim-emoji { font-size: 60px; } .stim-word { font-size: 44px; } .stim-letter { font-size: 96px; }
+  .eq { font-size: 42px; } .thing { font-size: 34px; } .prompt { font-size: 18px; }
+  .choice { min-height: 84px; } .ch-letter { font-size: 56px; } .ch-emoji { font-size: 50px; } .ch-num { font-size: 40px; }
+  .key { min-height: 50px; font-size: 26px; } .feedback { min-height: 26px; font-size: 20px; }
+  .big-glyph { font-size: 110px; } .big-num { font-size: 90px; }
+}

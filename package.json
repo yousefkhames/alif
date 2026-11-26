@@ -1,15 +1,14 @@
 {
   "name": "alif",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Offline Arabic letters, numbers and arithmetic games for kids. No ads, no accounts.",
+  "license": "MIT",
+  "private": true,
   "scripts": {
-    "test": "node --test tests/unit.test.js"
+    "start": "python3 -m http.server 8123",
+    "test": "node --test tests/unit.test.js",
+    "test:e2e": "node tests/e2e.js",
+    "shots": "node scripts/shots.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "puppeteer-core": "^25.19.0"
-  }
+  "devDependencies": { "puppeteer-core": "^25.0.0" }
 }
