@@ -81,7 +81,7 @@ function ok(cond, name) { if (cond) { passed++; console.log('  ok   ' + name); }
   ok((await hash()) === '#/' || (await hash()) === '', 'saving a child opens home');
   ok((await text('.chip-name')) === 'ليلى', 'child name shown on home');
   ok((await page.evaluate(() => document.documentElement.dir)) === 'rtl', 'default direction is RTL');
-  ok((await page.$$('.card')).length === 6, 'home has 6 cards');
+  ok((await page.$$('.card')).length === 7, 'home has 7 cards');
 
   console.log('Language');
   await click('#langBtn'); await sleep(200);
@@ -108,6 +108,15 @@ function ok(cond, name) { if (cond) { passed++; console.log('  ok   ' + name); }
   ok((await page.$$('.form')).length === 1, 'alif (non-joining) shows 1 form');
   await page.goto(BASE + '#/learn'); await sleep(200);
   ok((await page.$$('.ltile.seen')).length === 1, 'learned letter is marked in grid');
+
+  console.log('Learn numbers');
+  await page.goto(BASE + '#/numbers'); await sleep(250);
+  ok((await page.$$('.ntile')).length === 21, '21 number tiles (0 to 20)');
+  await click('.ntile[data-n="7"]'); await sleep(150);
+  ok((await text('#bigNum')) === '٧' && (await page.$$('.dot5')).length === 7, 'selecting 7 shows the digit and 7 dots');
+  ok(((await text('.n-ar')) === 'سبعة'), 'Arabic number word');
+  await click('.ntile[data-n="20"]'); await sleep(150);
+  ok((await text('.n-ar')) === 'عشرون' && (await text('#bigNum')) === '٢٠', 'twenty');
 
   console.log('Letter hunt: perfect round');
   await page.goto(BASE + '#/g/letters'); await sleep(200);

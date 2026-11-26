@@ -154,6 +154,7 @@
   /* ---------- views ---------- */
   var GAMES = [
     { id: 'learn', hash: '#/learn', c: 'c-teal', glyph: 'أ', t: 'learnLetters', d: 'learnLettersD' },
+    { id: 'numbers', hash: '#/numbers', c: 'c-leaf', glyph: '١٢٣', t: 'learnNumbers', d: 'learnNumbersD' },
     { id: 'letters', hash: '#/g/letters', c: 'c-saffron', glyph: '🔎', t: 'letterHunt', d: 'letterHuntD' },
     { id: 'count', hash: '#/g/count', c: 'c-coral', glyph: '🍎', t: 'counting', d: 'countingD' },
     { id: 'seq', hash: '#/g/seq', c: 'c-plum', glyph: '٢ ؟ ٤', t: 'sequence', d: 'sequenceD' },
@@ -168,7 +169,7 @@
         h('span', { class: 'card-glyph', 'aria-hidden': 'true', text: g.glyph }),
         h('span', { class: 'card-text' }, h('span', { class: 'card-title', text: t(g.t) }), h('span', { class: 'card-desc', text: t(g.d) })));
     });
-    cards.push(h('a', { class: 'card c-leaf wide', href: '#/stars', 'data-game': 'stars' },
+    cards.push(h('a', { class: 'card c-ink wide', href: '#/stars', 'data-game': 'stars' },
       h('span', { class: 'card-glyph', 'aria-hidden': 'true', text: '★' }),
       h('span', { class: 'card-text' }, h('span', { class: 'card-title', text: t('progress') }),
         h('span', { class: 'card-desc', text: t('totalStars') + ': ' + num(k ? k.stars : 0) }))));
@@ -278,6 +279,30 @@
       h('nav', { class: 'pager' },
         h('a', { class: 'btn ghost' + (prev ? '' : ' off'), href: prev || '#/learn/' + i, id: 'prevL', 'aria-label': rtl ? t('next') : t('back'), text: rtl ? '›' : '‹' }),
         h('a', { class: 'btn ghost' + (nextH ? '' : ' off'), href: nextH || '#/learn/' + i, id: 'nextL', 'aria-label': rtl ? t('back') : t('next'), text: rtl ? '‹' : '›' }))));
+  }
+
+  /* ----- learn numbers ----- */
+  function viewNumbers() {
+    var sel = 0;
+    var wrap = h('div', { class: 'screen numbers c-leaf' });
+    function draw() {
+      wrap.innerHTML = '';
+      wrap.appendChild(topbar(t('learnNumbers'), '#/'));
+      var dots = h('div', { class: 'dots', 'aria-hidden': 'true' });
+      for (var g = 0; g < sel; g++) dots.appendChild(h('span', { class: 'dot5' + (g % 5 === 4 ? ' gap' : '') }));
+      wrap.appendChild(h('section', { class: 'bigcard numcard' },
+        h('div', { class: 'big-num', id: 'bigNum', text: num(sel) }),
+        h('div', { class: 'names' }, h('span', { class: 'n-ar', text: D.NUM_WORDS.ar[sel] }), h('span', { class: 'n-en', text: D.NUM_WORDS.en[sel] })),
+        dots,
+        h('button', { class: 'btn speak', id: 'sayNum', onclick: function () { sfx.tap(); speak(D.NUM_WORDS.ar[sel]); } }, icon('speaker'), h('span', { text: t('listen') }))));
+      var grid = h('div', { class: 'ngrid' });
+      for (var i = 0; i <= 20; i++) (function (n) {
+        grid.appendChild(h('button', { class: 'ntile' + (n === sel ? ' on' : ''), 'data-n': String(n), 'aria-label': D.NUM_WORDS[st().lang][n], onclick: function () { sel = n; sfx.tap(); speak(D.NUM_WORDS.ar[n]); draw(); } },
+          h('span', { class: 'nt-num', text: num(n) }), h('span', { class: 'nt-word', text: D.NUM_WORDS[st().lang][n] })));
+      })(i);
+      wrap.appendChild(grid);
+    }
+    draw(); mount(wrap);
   }
 
   /* ----- game setup ----- */
@@ -599,6 +624,7 @@
       case 'who': return viewWho();
       case 'learn': return p[1] !== undefined && /^\d+$/.test(p[1]) ? viewLetter(parseInt(p[1], 10)) : viewLearn();
       case 'g': lastGame = p[1]; return viewSetup(p[1]);
+      case 'numbers': return viewNumbers();
       case 'play': return viewPlay();
       case 'stars': return viewStars();
       case 'parents': return viewParents();

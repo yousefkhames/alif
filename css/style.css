@@ -54,6 +54,7 @@ a { text-decoration: none; }
 .c-plum { --c: var(--plum); }
 .c-sky { --c: var(--sky); }
 .c-leaf { --c: var(--leaf); }
+.c-ink { --c: var(--ink); }
 
 /* top bar */
 .bar { display: flex; align-items: center; gap: 10px; min-height: 52px; }
@@ -263,3 +264,17 @@ a { text-decoration: none; }
   .eq { font-size: 44px; } .card-title { font-size: 20px; }
 }
 @media (max-height: 640px) and (orientation: landscape) { .qbox { min-height: 120px; } .big-glyph { font-size: 90px; } }
+
+/* numbers */
+.numcard { --c: var(--leaf); min-height: 250px; justify-content: center; }
+.big-num { font-size: 120px; line-height: 1.2; font-weight: 800; color: var(--paper); text-shadow: 0 5px 0 rgba(25, 50, 58, 0.45); }
+.dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; max-width: 280px; min-height: 18px; direction: ltr; }
+.dot5 { width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--ink); }
+.ngrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ntile { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 84px; padding: 4px; background: #fff; border: 3px solid var(--ink); border-radius: 18px; box-shadow: 0 4px 0 var(--ink); }
+.ntile.on { background: var(--saffron); transform: translateY(4px); box-shadow: none; }
+.ntile:active { transform: translateY(4px); box-shadow: none; }
+.nt-num { font-size: 36px; font-weight: 800; line-height: 1.2; }
+.nt-word { font-size: 14px; color: var(--ink2); text-align: center; line-height: 1.1; }
+.ntile.on .nt-word { color: var(--ink); }
+@media (min-width: 560px) { .ngrid { grid-template-columns: repeat(7, 1fr); } }
