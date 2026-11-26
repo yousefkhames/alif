@@ -1,5 +1,5 @@
 /* Alif service worker: cache-first so the app works offline after the first visit. */
-var CACHE = 'alif-v2';
+var CACHE = 'alif-v3';
 var AUDIO = (function(){var a=[],i,p;for(i=0;i<28;i++){p=(i<10?'0':'')+i;a.push('audio/n'+p+'.mp3','audio/w'+p+'.mp3','audio/s'+p+'.mp3');}for(i=0;i<21;i++)a.push('audio/d'+(i<10?'0':'')+i+'.mp3');for(i=0;i<5;i++)a.push('audio/p0'+i+'.mp3');return a;})();
 var ASSETS = ['./', 'index.html', 'css/style.css', 'js/data.js', 'js/logic.js', 'js/store.js', 'js/app.js',
   'fonts/BalooBhaijaan2-subset.ttf', 'icon.svg', 'icon-192.png', 'icon-512.png', 'manifest.webmanifest'];
