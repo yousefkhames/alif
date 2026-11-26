@@ -14,6 +14,15 @@
   <img src="docs/math.png" alt="Quick math with a keypad" width="190">
 </p>
 
+## Screenshots
+
+Captured from the live site (https://yousefkhames.github.io/alif/).
+
+<p>
+  <img src="docs/screenshots/live-desktop.png" alt="alif desktop view" width="640">
+  <img src="docs/screenshots/live-mobile.png" alt="alif mobile view" width="200">
+</p>
+
 ## Why
 
 Most kids' learning apps are full of ads, want an account, or stop working without a connection. Alif is a small set of games a parent can hand over without watching: it loads once, then runs on the device. It has no ads, no tracking, no accounts and no server. A child's progress stays in the browser.
