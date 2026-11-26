@@ -205,7 +205,7 @@ a { text-decoration: none; }
 .ch-letter { font-size: 70px; line-height: 1.25; font-weight: 700; }
 .ch-emoji { font-size: 66px; line-height: 1.1; }
 .ch-num { font-size: 52px; font-weight: 800; }
-.feedback { margin: 0; min-height: 34px; text-align: center; font-size: 24px; font-weight: 800; }
+.feedback { margin: 0; min-height: 30px; text-align: center; font-size: 24px; font-weight: 800; }
 .feedback.good { color: var(--good); } .feedback.bad { color: var(--bad); } .feedback.info { color: var(--ink); }
 .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .key { min-height: 64px; background: #fff; border: 3px solid var(--ink); border-radius: 18px; font-size: 32px; font-weight: 800; box-shadow: 0 4px 0 var(--ink); }

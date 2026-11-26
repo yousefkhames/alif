@@ -414,7 +414,8 @@
       if (q.mode === 'word') {
         qbox.appendChild(h('p', { class: 'prompt', text: t('pickLetter') }));
         qbox.appendChild(h('div', { class: 'stim' }, R.level < 3 ? h('span', { class: 'stim-emoji', text: Lt.e, 'aria-hidden': 'true' }) : null,
-          h('span', { class: 'stim-word', text: Lt.w }), st().lang === 'en' && R.level < 3 ? h('span', { class: 'ex-en', text: Lt.wen }) : null));
+          h('span', { class: 'stim-word', text: Lt.w }), st().lang === 'en' && R.level < 3 ? h('span', { class: 'ex-en', text: Lt.wen }) : null,
+          h('button', { class: 'iconbtn', id: 'sayW', 'aria-label': t('listen'), onclick: function () { speak(Lt.w); } }, icon('speaker'))));
         q.choices.forEach(function (ci) { choices.appendChild(choiceBtn(ci, h('span', { class: 'ch-letter', text: D.LETTERS[ci].c }), 'letterc', D.LETTERS[ci].ar)); });
       } else {
         qbox.appendChild(h('p', { class: 'prompt', text: t('pickPicture') }));
