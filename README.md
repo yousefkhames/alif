@@ -64,6 +64,7 @@ python3 -m http.server 8123      # or any static file server
 npm install            # only needed for the browser test (puppeteer-core)
 npm test               # unit tests: letter data, question generators, scoring, storage
 BASE=http://localhost:8123/ npm run test:e2e   # real Chrome click-through
+BASE=http://localhost:8123/ node tests/audio.js # audio clips, playback and offline
 ```
 
 The browser test plays full rounds of every game, checks wrong-answer behavior, profiles, backup import (including a bad file), press-and-hold erase, persistence across reloads, English and Arabic layout, and that the app loads with the network turned off and makes no request outside its own origin. It needs Chrome at `/usr/bin/google-chrome` (set `CHROME` to change it).
@@ -72,7 +73,8 @@ The browser test plays full rounds of every game, checks wrong-answer behavior, 
 
 - GitHub Pages is a demo host. For a real classroom or home, host the files yourself.
 - Progress lives in one browser on one device. Clearing site data erases it. Use the backup file in the grown-ups corner to move it. There is no sync.
-- Spoken letters use the device's own Arabic text-to-speech voice. If the device has none, the Listen button shows a message instead of speaking. Quality varies by device.
+- Pronunciation uses 110 bundled recordings in `audio/` (about 0.6 MB), played by the app and cached for offline use. They are synthetic neural speech (voice `ar-SA-ZariyahNeural`, Modern Standard Arabic, fully vowelled text), not a human teacher. I could not listen to them: I checked them only with an automatic speech recognizer, which is weak on single letters, so a few clips (for example some letter sounds and the emphatic letters) may sound slightly off to a native ear. A native speaker should review them. The device's own Arabic voice is used only if a clip fails to load.
+- The clips were made with the free `edge-tts` tool, which calls Microsoft's online voice service (see `scripts/gen-audio.py`). That is an unofficial route, so check Microsoft's terms before using the app commercially. To replace a clip, record a short mp3 with the same file name.
 - The parent gate is a multiplication question. It keeps small children out, it is not security.
 - Example words and pictures use emoji, which look different on each platform. Some words are in Modern Standard Arabic, not a local dialect.
 - Letter shapes in the "four shapes" view depend on the browser's Arabic text shaping.

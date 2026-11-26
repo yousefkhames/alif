@@ -91,8 +91,14 @@
     var vs = window.speechSynthesis.getVoices();
     if (vs && vs.length) voiceState = arabicVoice() ? 'ok' : 'none';
   }
-  function speak(text) {
-    if (!st().speech || !('speechSynthesis' in window)) return false;
+  /* bundled recordings: audio/<key>.mp3, device voice only as fallback */
+  var CLIPS = {};
+  D.LETTERS.forEach(function (l, i) { var p = i < 10 ? '0' + i : '' + i; CLIPS[l.ar] = 'n' + p; CLIPS[l.w] = 'w' + p; CLIPS['snd:' + l.c] = 's' + p; });
+  D.NUM_WORDS.ar.forEach(function (w, i) { CLIPS[w] = 'd' + (i < 10 ? '0' + i : i); });
+  var player = null;
+  function stopAudio() { try { if (player) { player.onended = null; player.pause(); } } catch (e) { /* ignore */ } player = null; }
+  function speakTTS(text) {
+    if (!('speechSynthesis' in window)) return false;
     refreshVoices();
     var v = arabicVoice();
     if (!v) return false;
@@ -103,6 +109,24 @@
       window.speechSynthesis.speak(u);
       return true;
     } catch (e) { return false; }
+  }
+  function playClip(key, text, done) {
+    stopAudio();
+    try {
+      var a = new Audio('audio/' + key + '.mp3');
+      player = a;
+      a.onended = function () { if (done) done(); };
+      a.onerror = function () { if (player === a) { player = null; if (text) speakTTS(text); if (done) done(); } };
+      var pr = a.play();
+      if (pr && pr.catch) pr.catch(function () { if (player === a) { player = null; if (text) speakTTS(text); } });
+      return true;
+    } catch (e) { return text ? speakTTS(text) : false; }
+  }
+  function speak(text, done) {
+    if (!st().speech) return false;
+    var key = CLIPS[text];
+    if (key) return playClip(key, text.indexOf('snd:') === 0 ? null : text, done);
+    return speakTTS(text);
   }
   if ('speechSynthesis' in window) {
     refreshVoices();
@@ -269,7 +293,9 @@
       h('section', { class: 'bigcard' },
         h('div', { class: 'big-glyph', text: Lt.c, 'aria-label': Lt.ar }),
         h('div', { class: 'names' }, h('span', { class: 'n-ar', text: Lt.ar }), h('span', { class: 'n-en', text: Lt.en })),
-        h('button', { class: 'btn speak', id: 'sayLetter', onclick: function () { say(Lt.ar); } }, icon('speaker'), h('span', { text: t('listen') }))),
+        h('div', { class: 'speakrow' },
+          h('button', { class: 'btn speak', id: 'sayLetter', onclick: function () { say(Lt.ar); } }, icon('speaker'), h('span', { text: t('listen') })),
+          h('button', { class: 'btn speak ghost', id: 'sayLetterSound', onclick: function () { say('snd:' + Lt.c); } }, icon('speaker'), h('span', { text: t('letterSound') })))),
       forms(),
       h('section', { class: 'example' }, h('span', { class: 'ex-emoji', text: Lt.e, 'aria-hidden': 'true' }),
         h('span', { class: 'ex-text' }, h('span', { class: 'lbl', text: t('exampleWord') }),
@@ -384,9 +410,9 @@
         if (first) { R.correct++; R.streak++; R.best = Math.max(R.best, R.streak); }
         if (q.kind === 'letter') { var kd = store.kid(); if (kd) { kd.mastery = L.updateMastery(kd.mastery, q.id, first); store.saveKid(); } }
         if (btn) btn.classList.add('right');
-        fb.textContent = pick(t('correct')); fb.className = 'feedback good';
+        var phr = t('correct'), pi = Math.floor(Math.random() * phr.length); fb.textContent = phr[pi]; fb.className = 'feedback good';
         sfx.ok();
-        if (q.kind === 'letter') later(function () { speak(D.LETTERS[q.target].ar); }, 350);
+        if (st().speech) playClip('p0' + Math.min(pi, 3), null, q.kind === 'letter' ? function () { speak(D.LETTERS[q.target].ar); } : null);
         later(function () { R.i++; route(); }, 1100);
       } else {
         sfx.bad();
@@ -399,7 +425,7 @@
           if (q.typed) { var d = document.getElementById('typedOut'); if (d) d.textContent = num(q.answer); }
           later(function () { R.i++; route(); }, 1900);
         } else {
-          fb.textContent = t('wrong'); fb.className = 'feedback bad';
+          fb.textContent = t('wrong'); fb.className = 'feedback bad'; if (st().speech) playClip('p04', null);
           if (q.typed) { R.typed = ''; var o = document.getElementById('typedOut'); if (o) { o.textContent = '?'; o.classList.add('shake'); later(function () { o.classList.remove('shake'); }, 400); } }
         }
       }
@@ -616,7 +642,7 @@
   /* ---------- router ---------- */
   function route() {
     clearTimers(); unbindKeys();
-    try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    stopAudio(); try { if ('speechSynthesis' in window) window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
     var hsh = (location.hash || '#/').replace(/^#\/?/, '');
     var p = hsh.split('/');
     if (!store.kid() && p[0] !== 'who') return go('#/who');
