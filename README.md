@@ -93,3 +93,10 @@ The browser test plays full rounds of every game, checks wrong-answer behavior, 
 ## License
 
 MIT, see [LICENSE](LICENSE). Baloo Bhaijaan 2 font: SIL Open Font License 1.1.
+
+
+## Demo / portfolio project
+
+Static GitHub Pages site. Data stays in your browser. Sample data is fictional and results are not professional, legal, medical or financial advice.
+
+By Yousef Khames · من تطوير يوسف خميس
